@@ -1,0 +1,9 @@
+--my cool manatee app
+
+to echo string s:
+  write s
+  write s
+end
+
+do echo("hubba")
+do echo("sigh") after 3-10*2 seconds
