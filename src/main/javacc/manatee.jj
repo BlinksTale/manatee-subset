@@ -48,7 +48,7 @@ SKIP: {
 TOKEN: {
     "my" | "is" | "always" | "truth" | "value" | "character" | "whole" | "number"
     | "string" | "list" | "to" | "get" | "end" | "a" | "an" | "some" | "the" | "and"
-    | "read" | "write" | "set" | "exit" | "return" | "do" | "nothing"
+    | "read" | "write" | "set" | "exit" | "return" | "do" | "nothing" | "after" | "seconds"
     | "if" | "while" | "else" | "loop" | "times" | "for" | "each" | "by" | "in" | "or"
     | "yes" | "no" | "not" | "length" | "of"
     | ":" | "," | "+" | "-" | "*" | "/" | "<<" | ">>"
@@ -319,21 +319,22 @@ Block BLOCK(): {
     {return new Block(statements);}
 }
 
-// ----------------------------
+// -------------------------------------------------
 // SIMPLESTMT -> write EXP
 //            |  read EXP
 //            |  set EXP to EXP
 //            |  exit the loop
 //            |  return EXP?
 //            |  do nothing
-//            |  do ID EXPLIST?
-// ----------------------------
+//            |  do ID EXPLIST? (after EXP seconds)?
+// -------------------------------------------------
 
 Statement SIMPLESTMT(): {
     Expression e = null;
     Token t = null;
     Expression source;
     Expression target;
+    Expression delay = null;
     List<Expression> args = new ArrayList<Expression>();
 }{
     (
@@ -355,8 +356,8 @@ Statement SIMPLESTMT(): {
         LOOKAHEAD(2) "do" "nothing"
         {return new DoNothingStatement();}
     |
-        "do" t = <ID> args = EXPLIST()
-        {return new CallStatement(t.image, args);}
+        "do" t = <ID> args = EXPLIST() ("after" delay = EXP() "seconds")?
+        { return new CallStatement(t.image, args, delay);}
     )
 }
 

@@ -103,4 +103,10 @@ public abstract class Expression extends Entity {
             log.error("non.array.or.string", context);
         }
     }
+
+    void analyzeArithmetic(String context, Log log) {
+        if (!((type == Type.WHOLE_NUMBER) || (type == Type.NUMBER))) {
+            log.error("non.analyzable.arithmetic", context, type);
+        }
+    }
 }
