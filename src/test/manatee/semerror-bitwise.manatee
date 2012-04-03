@@ -1,0 +1,4 @@
+write 1 bit and z
+write 1 bit xor y
+write 1 bit or x
+write complement of v

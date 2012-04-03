@@ -303,7 +303,7 @@ public class ManateeToJavaScriptGenerator extends Generator {
             op = "===";
         } else if (op.equals("≠")) {
             op = "!==";
-        } else if (op.matches("-|/|<<|>>|<|<=|>|>=")) {
+        } else if (op.matches("-|/|modulo|<<|>>|<|<=|>|>=")) {
             // Nothing here, just checking the operator is valid
         } else {
             throw new RuntimeException("InternalError in binary expression translation");

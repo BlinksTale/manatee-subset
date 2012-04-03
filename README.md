@@ -14,11 +14,11 @@ Here are some of the full language features not implemented in this subset:
 * Streams for reading and writing
 * Increment and decrement statements
 * Parallel assignment
-* Exceptions
-* Timers
-* `unless` and `until` modifiers
-* Bitwise operators
-* Modulo operator
-* Divides operator
-* Bitwise complement operator
+* DONE: Exceptions
+* DONE: Timers
+* DONE: `unless` and `until` modifiers
+* DONE: Bitwise operators
+* DONE: Modulo operator
+* DONE: Divides operator
+* DONE: Bitwise complement operator
 

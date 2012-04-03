@@ -1,0 +1,5 @@
+try:
+  do nothing
+recoverx: --recoverx is the wrong syntax, should throw a syntactic error
+  do nothing
+end

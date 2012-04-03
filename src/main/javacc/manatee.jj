@@ -47,12 +47,12 @@ SKIP: {
 
 TOKEN: {
     "my" | "is" | "always" | "truth" | "value" | "character" | "whole" | "number"
-    | "string" | "list" | "to" | "get" | "end" | "a" | "an" | "some" | "the" | "and"
+    | "string" | "list" | "to" | "get" | "end" | "a" | "an" | "some" | "the" | "and" | "xor"
     | "read" | "write" | "set" | "exit" | "return" | "do" | "nothing" | "after" | "seconds"
-    | "if" | "while" | "else" | "loop" | "times" | "for" | "each" | "by" | "in" | "or"
-    | "yes" | "no" | "not" | "length" | "of"
-    | ":" | "," | "+" | "-" | "*" | "/" | "<<" | ">>"
-    | "<" | "<=" | "=" | "≠" | ">=" | ">" | "(" | ")" | "[" | "]"
+    | "if" | "while" | "unless" | "until" | "else" | "loop" | "times" | "for" | "each" | "by"
+    | "in" | "or" | "yes" | "no" | "not" | "length" | "complement" | "of" | "try" | "recover"
+    | ":" | "," | "+" | "-" | "*" | "/" | "modulo" | "<<" | ">>"
+    | "<" | "<=" | "=" | "≠" | ">=" | ">" | "divides" | "(" | ")" | "[" | "]"
 |
     < BR: "\n" | "\r" | "\r\n" >
 |
@@ -362,7 +362,7 @@ Statement SIMPLESTMT(): {
 }
 
 // ----------------------------
-// MODIFIER -> (if | while) EXP
+// MODIFIER -> (if | while | unless | until) EXP
 // ----------------------------
 
 ModifiedStatement.Modifier MODIFIER(): {
@@ -373,6 +373,10 @@ ModifiedStatement.Modifier MODIFIER(): {
         "if" {m = ModifiedStatement.ModifierType.IF;}
     |
         "while" {m = ModifiedStatement.ModifierType.WHILE;}
+    |
+        "unless" {m = ModifiedStatement.ModifierType.UNLESS;}
+    |
+        "until" {m = ModifiedStatement.ModifierType.UNTIL;}
     )
     e = EXP()
     {return new ModifiedStatement.Modifier(m, e);}
@@ -381,6 +385,7 @@ ModifiedStatement.Modifier MODIFIER(): {
 // --------------------------
 // COMPLEXSTMT -> CONDITIONAL
 //             |  LOOP
+//             |  TRY
 // --------------------------
 
 Statement COMPLEXSTMT(): {
@@ -390,9 +395,12 @@ Statement COMPLEXSTMT(): {
         s = CONDITIONAL()
     |
         s = LOOP()
+    |
+        s = TRY()
     )
     {return s;}
 }
+
 // ------------------------------------------------------------------
 // CONDITIONAL -> if EXP BLOCK (else if EXP BLOCK)* (else BLOCK)? end
 // ------------------------------------------------------------------
@@ -421,6 +429,7 @@ Statement CONDITIONAL(): {
 // LOOP        -> LOOPCONTROL BLOCK end
 // LOOPCONTROL -> loop (EXP times)?
 //             |  while EXP
+//             |  until EXP
 //             |  for each ID in EXP (to EXP (by EXP)?)?
 // -----------------------------------------------------
 
@@ -438,6 +447,9 @@ Statement LOOP(): {
         "while" e = EXP() b = BLOCK() "end"
         {return new WhileLoop(e, b);}
     |
+        "until" e = EXP() b = BLOCK() "end"
+        {return new UntilLoop(e, b);}
+    |
         "for" "each" t = <ID> "in" e = EXP()
         (
             "to" e2 = EXP() ("by" e3 = EXP())?
@@ -451,6 +463,18 @@ Statement LOOP(): {
             }
         }
     )
+}
+
+// ----------------------------------
+// TRY -> try BLOCK recover BLOCK end
+// ----------------------------------
+
+TryStatement TRY(): {
+    Block tryBlock;
+    Block recoverBlock;
+}{
+    "try" tryBlock=BLOCK() "recover" recoverBlock=BLOCK() "end"
+    {return new TryStatement(tryBlock, recoverBlock);}
 }
 
 // ----------------------
@@ -474,8 +498,47 @@ Expression EXP1(): {
     Expression e1;
     Expression e2;
 }{
+    e1 = EXP2()
+    ("and" e2 = EXP2() {e1 = new BinaryExpression(e1, "and", e2);})*
+    {return e1;}
+}
+
+// ---------------------------
+// EXP2 -> EXP3 (bit or EXP3)*
+// ---------------------------
+
+Expression EXP2(): {
+    Expression e1;
+    Expression e2;
+}{
+    e1 = EXP3()
+    ("bit or" e2 = EXP3() {e1 = new BinaryExpression(e1, "bit or", e2);})*
+    {return e1;}
+}
+
+// ----------------------------
+// EXP3 -> EXP4 (bit xor EXP4)*
+// ----------------------------
+
+Expression EXP3(): {
+    Expression e1;
+    Expression e2;
+}{
+    e1 = EXP4()
+    ("bit xor" e2 = EXP4() {e1 = new BinaryExpression(e1, "bit xor", e2);})*
+    {return e1;}
+}
+
+// ----------------------------
+// EXP4 -> EXP5 (bit and EXP5)*
+// ----------------------------
+
+Expression EXP4(): {
+    Expression e1;
+    Expression e2;
+}{
     e1 = EXP5()
-    ("and" e2 = EXP5() {e1 = new BinaryExpression(e1, "and", e2);})*
+    ("bit and" e2 = EXP5() {e1 = new BinaryExpression(e1, "bit and", e2);})*
     {return e1;}
 }
 
@@ -651,9 +714,9 @@ List<Expression> EXPLIST(): {
     {return expressions;}
 }
 
-// ------------------------------------------------------
-// RELOP -> '<' | '<=' | '=' | '≠' | '>=' | '>' | is not?
-// ------------------------------------------------------
+// ----------------------------------------------------------------
+// RELOP -> '<' | '<=' | '=' | '≠' | '>=' | '>' | divides | is not?
+// ----------------------------------------------------------------
 
 String RELOP(): {
 }{
@@ -668,6 +731,8 @@ String RELOP(): {
     ">=" {return ">=";}
     |
     ">" {return ">";}
+    |
+    "divides" {return "divides";}
     |
     LOOKAHEAD(2) "is" "not" {return "is not";}
     |
@@ -696,14 +761,14 @@ String ADDOP(): {
     {return t.image;}
 }
 
-// ------------------
-// MULOP -> '*' | '/'
-// ------------------
+// ---------------------------
+// MULOP -> '*' | '/' | modulo
+// ---------------------------
 
 String MULOP(): {
     Token t;
 }{
-    (t = "*" | t = "/")
+    (t = "*" | t = "/" | t = "modulo")
     {return t.image;}
 }
 
@@ -714,6 +779,6 @@ String MULOP(): {
 String PREFIX(): {
     Token t;
 }{
-    (t = "-" | t = "not" | t = "length" "of")
+    (t = "-" | t = "not" | t = "length" "of" | t = "complement" "of")
     {return t.image;}
 }

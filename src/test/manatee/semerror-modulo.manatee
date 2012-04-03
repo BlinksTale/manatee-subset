@@ -1,0 +1,2 @@
+my x is 2
+set x to 10 modulo y -- semerror, y not found

@@ -1,0 +1,4 @@
+write 1 bit and 2
+write 1 bit xor 2
+write 1 bit or 2
+write complement of 1

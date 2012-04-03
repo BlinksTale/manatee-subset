@@ -48,6 +48,10 @@ public class UnaryExpression extends Expression {
             operand.assertArrayOrString(op, log);
             type = Type.WHOLE_NUMBER;
 
+        } else if ("complement".equals(op)) {
+            operand.assertInteger(op, log);
+            type = Type.WHOLE_NUMBER;
+
         } else {
             throw new RuntimeException("Internal error in unary expression analysis");
         }

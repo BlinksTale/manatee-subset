@@ -1,0 +1,7 @@
+my k is 0
+write k
+set k to k+1 until k > 50
+write k 
+set k to k-1 unless k < 10
+write k 
+

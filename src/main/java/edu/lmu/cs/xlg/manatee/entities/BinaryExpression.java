@@ -47,17 +47,23 @@ public class BinaryExpression extends Expression {
         right.analyze(log, table, owner, inLoop);
 
         // num op num (for arithmetic op)
-        if (op.matches("[-+*/]")) {
+        if (op.matches("[-+*/]|modulo")) {
             left.assertArithmetic(op, log);
             right.assertArithmetic(op, log);
             type = (left.type == Type.NUMBER || right.type == Type.NUMBER)
                 ? Type.NUMBER : Type.WHOLE_NUMBER;
 
         // int op int returning int (for shifts and mod)
-        } else if (op.matches("<<|>>")) {
+        } else if (op.matches("<<|>>|bit and|bit or|bit xor")) {
             left.assertInteger(op, log);
             right.assertInteger(op, log);
             type = Type.WHOLE_NUMBER;
+
+        // int op int returning bool (for divides)
+        } else if (op.matches("divides")) {
+            left.assertInteger(op, log);
+            right.assertInteger(op, log);
+            type = Type.TRUTH_VALUE;
 
         // char/num/str op char/num/str (for greater/less inequalities)
         } else if (op.matches("<|<=|>|>=")) {

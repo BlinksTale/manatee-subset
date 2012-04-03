@@ -1,0 +1,5 @@
+try:
+  do nothing
+recover:
+  write k --k does not exist, should throw a semantic error
+end

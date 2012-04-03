@@ -1,0 +1,2 @@
+my x is 2
+set x to 10 modulox 2 -- synerror, modulox is not modulo

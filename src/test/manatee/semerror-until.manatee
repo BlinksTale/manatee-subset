@@ -1,0 +1,3 @@
+--my other lame manatee app
+
+do echo("LOSER") until x < 10 --x not found, error flagged

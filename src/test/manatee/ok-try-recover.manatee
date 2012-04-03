@@ -1,0 +1,7 @@
+-- Should work, tests the try recover functionality of manatee
+
+try: --don't forget the colon! This got me a few times
+  do nothing
+recover:
+  do nothing
+end

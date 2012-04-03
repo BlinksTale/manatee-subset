@@ -1,0 +1,4 @@
+write 1 bit xand 2
+write 1 bit nor 2
+write 1 bit orr 2
+write compliment of 1
