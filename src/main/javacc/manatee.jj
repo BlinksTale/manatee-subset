@@ -48,10 +48,10 @@ SKIP: {
 TOKEN: {
     "my" | "is" | "always" | "truth" | "value" | "character" | "whole" | "number"
     | "string" | "list" | "to" | "get" | "end" | "a" | "an" | "some" | "the" | "and" | "xor"
-    | "read" | "write" | "set" | "exit" | "return" | "do" | "nothing" | "after" | "seconds"
-    | "if" | "while" | "unless" | "until" | "else" | "loop" | "times" | "for" | "each" | "by"
-    | "in" | "or" | "yes" | "no" | "not" | "length" | "complement" | "of" | "try" | "recover"
-    | ":" | "," | "+" | "-" | "*" | "/" | "modulo" | "<<" | ">>"
+    | "read" | "write" | "increment" | "decrement" | "set" | "exit" | "return" | "do" | "nothing"
+    | "after" | "seconds" | "if" | "while" | "unless" | "until" | "else" | "loop" | "times"
+    | "for" | "each" | "by" | "in" | "or" | "yes" | "no" | "not" | "length" | "complement"
+    | "of" | "try" | "recover" | ":" | "," | "+" | "-" | "*" | "/" | "modulo" | "<<" | ">>"
     | "<" | "<=" | "=" | "≠" | ">=" | ">" | "divides" | "(" | ")" | "[" | "]"
 |
     < BR: "\n" | "\r" | "\r\n" >
@@ -67,7 +67,7 @@ TOKEN: {
         (
             ~["'", "\\" ,"\u0000"-"\u001f", "\u007f"-"\u009f"]
         |
-            "\\" ["n", "t", "\"", "\'", "\\"]
+            "\\" (["n", "t", "\"", "\'", "\\"]|("(" (["0"-"9","a"-"f","A"-"F"]){4} ")"))
         )
         "'"
     >
@@ -77,7 +77,7 @@ TOKEN: {
         (
             ~["\"", "\\" ,"\u0000"-"\u001f", "\u007f"-"\u009f"]
         |
-            "\\" ["n", "t", "\"", "\'", "\\"]
+            "\\" (["n", "t", "\"", "\'", "\\"]|("(" (["0"-"9","a"-"f","A"-"F"]){4} ")"))
         )*
         "\""
     >
@@ -322,6 +322,8 @@ Block BLOCK(): {
 // -------------------------------------------------
 // SIMPLESTMT -> write EXP
 //            |  read EXP
+//            |  increment EXP (by EXP)?
+//            |  decrement EXP (by EXP)?
 //            |  set EXP to EXP
 //            |  exit the loop
 //            |  return EXP?
@@ -331,6 +333,7 @@ Block BLOCK(): {
 
 Statement SIMPLESTMT(): {
     Expression e = null;
+    Expression f = null;
     Token t = null;
     Expression source;
     Expression target;
@@ -343,6 +346,12 @@ Statement SIMPLESTMT(): {
     |
         "read" e = EXP()
         {return new ReadStatement(e);}
+    |
+        "increment" e = EXP() ("by" f = EXP())?
+        {return new IncrementStatement(e,f);}
+    |
+        "decrement" e = EXP() ("by" f = EXP())?
+        {return new DecrementStatement(e,f);}
     |
         "set" target = EXP() "to" source = EXP()
         {return new AssignmentStatement(target, source);}

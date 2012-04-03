@@ -1,0 +1,9 @@
+-- Simple increment tester
+
+my x is 0
+for each i in 1 to 10:
+    increment x by 2
+end
+for each i in 1 to 5:
+    decrement x by 3
+end
