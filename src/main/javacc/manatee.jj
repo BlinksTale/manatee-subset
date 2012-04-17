@@ -655,13 +655,14 @@ Expression EXP9(): {
     {return op == null ? e : new UnaryExpression(op, e);}
 }
 
-// ----------------------------------------
+// -------------------------------------------------
 // EXP10 -> EXP11 SUFFIX*
-// SUFFIX -> '(' EXPLIST? ')' | '[' EXP ']'
-// ----------------------------------------
+// SUFFIX -> '(' EXPLIST? ')' | '[' EXP ']' | '.' ID
+// -------------------------------------------------
 
 Expression EXP10(): {
     Expression e;
+    Token t;
     List<Expression> args = new ArrayList<Expression>();
     Expression subscript;
 }{
@@ -672,14 +673,16 @@ Expression EXP10(): {
     |
         "[" subscript = EXP() "]"
         {e = new SubscriptExpression(e, subscript);}
+    |
+        "." t = <ID>
+        {e = new PropertyExpression(e, t.image);}
     )*
     {return e;}
 }
 
 // -------------------------
 // EXP11 -> LITERAL
-//       |  ID
-//       |  ID '{' ID ':' EXP (',' ID ':' EXP)* '}'
+//       |  ID ('{' ID ':' EXP (',' ID ':' EXP)* '}' | )
 //       |  '[' EXPLIST? ']'
 //       |  '(' EXP ')'
 // -------------------------

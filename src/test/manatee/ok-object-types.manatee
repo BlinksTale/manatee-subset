@@ -17,5 +17,5 @@ a point object has:
     a number y
 end
 my p is point {x: 2, y: 4}
---write p.x                    -- prints 2
+write p.x                    -- prints 2
 --write p.y                    -- prints 4
