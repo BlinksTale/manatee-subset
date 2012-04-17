@@ -46,13 +46,13 @@ SKIP: {
 // Reserved Words and symbols
 
 TOKEN: {
-    "my" | "is" | "always" | "truth" | "value" | "character" | "whole" | "number"
-    | "string" | "list" | "to" | "get" | "end" | "a" | "an" | "some" | "the" | "and" | "xor"
+    "my" | "is" | "always" | "truth" | "value" | "character" | "whole" | "number" | "object"
+    | "string" | "list" | "to" | "get" | "end" | "a" | "an" | "has" | "some" | "the" 
     | "read" | "write" | "increment" | "decrement" | "set" | "exit" | "return" | "do" | "nothing"
     | "after" | "seconds" | "if" | "while" | "unless" | "until" | "else" | "loop" | "times"
-    | "for" | "each" | "by" | "in" | "or" | "yes" | "no" | "not" | "length" | "complement"
-    | "of" | "try" | "recover" | ":" | "," | "+" | "-" | "*" | "/" | "modulo" | "<<" | ">>"
-    | "<" | "<=" | "=" | "≠" | ">=" | ">" | "divides" | "(" | ")" | "[" | "]"
+    | "for" | "each" | "by" | "in" | "or" | "xor" | "and" | "yes" | "no" | "not" | "length"
+    | "complement" | "of" | "try" | "recover" | ":" | "," | "+" | "-" | "*" | "/" | "modulo"
+    | "<<" | ">>" | "<" | "<=" | "=" | "≠" | ">=" | ">" | "divides" | "(" | ")" | "[" | "]"
 |
     < BR: "\n" | "\r" | "\r\n" >
 |
@@ -186,15 +186,17 @@ Statement STMT(): {
     {return s;}
 }
 
-// ---------------------------------
-// DEC -> VARDEC | PROCDEC | FUNCDEC
-// ---------------------------------
+// -------------------------------------------
+// DEC -> VARDEC | TYPEDEC | PROCDEC | FUNCDEC
+// -------------------------------------------
 
 Statement DEC(): {
     Statement s;
 }{
     (
         s = VARDEC()
+    |
+        s = TYPEDEC()
     |
         LOOKAHEAD(2) s = FUNDEC()
     |
@@ -251,6 +253,25 @@ String TYPE(): {
         LOOKAHEAD(2) "list" {builder.append(" list");}
     )*
     {return builder.toString();}
+}
+
+// --------------------------------------------------------------
+// TYPEDEC -> (a | an) ID has ':' BR+ ((a | an) TYPE ID BR+)+ end
+// --------------------------------------------------------------
+
+Type TYPEDEC(): {
+    Token name;
+    List<ObjectType.Property> properties = new ArrayList<ObjectType.Property>();
+    String propertyType;
+    Token propertyName;
+}{
+    ("a" | "an") name = <ID> ("object")? "has" ":" (<BR>)+ (
+        ("a" | "an") propertyType = TYPE() propertyName = <ID>
+        { properties.add(new ObjectType.Property(propertyName.image, propertyType)); }
+        (<BR>)+
+    )+
+    "end"
+    {return new ObjectType(name.image, properties);}
 }
 
 // ----------------------------------
@@ -658,21 +679,44 @@ Expression EXP10(): {
 // -------------------------
 // EXP11 -> LITERAL
 //       |  ID
+//       |  ID '{' ID ':' EXP (',' ID ':' EXP)* '}'
 //       |  '[' EXPLIST? ']'
 //       |  '(' EXP ')'
 // -------------------------
 
 Expression EXP11(): {
     List<Expression> expressions = new ArrayList<Expression>();
+    List<String> tokens = new ArrayList<String>();
     Expression e = null;
     Token t;
+    Token pt;
 }{
     (
         e = LITERAL()
         {return e;}
     |
         t = <ID>
-        {return new IdentifierExpression(t.image);}
+        (
+          (
+            "{"
+            pt = <ID> ":" e = EXP()
+            {
+              expressions.add(e);
+              tokens.add(pt.image);
+            }
+            (
+              "," pt = <ID> ":" e = EXP()
+              {
+                expressions.add(e);
+                tokens.add(pt.image);
+              }
+            )*
+            "}"
+            {return new ObjectConstructor(t.image, expressions, tokens);}
+          )
+        |
+          {return new IdentifierExpression(t.image);}
+        )
     |
         "[" (expressions = EXPLIST())? "]"
         {return new ArrayConstructor(expressions);}

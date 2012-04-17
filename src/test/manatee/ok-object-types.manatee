@@ -1,0 +1,21 @@
+--object types from Prof. Toal's page
+
+a point has:             -- declares type point
+    a number x           -- declares property x of type point
+    a number y           -- declares property y of type point
+end
+
+a dress has:
+    a string brand
+    a whole number size
+    a string list colors
+    a truth value used
+end
+
+a point object has:
+    a number x
+    a number y
+end
+my p is point {x: 2, y: 4}
+--write p.x                    -- prints 2
+--write p.y                    -- prints 4

@@ -11,7 +11,7 @@ Here are some of the full language features not implemented in this subset:
 * Modules
 * DONE: Codepoint escapes in character and string literals
 * Object types and literals
-* Streams for reading and writing
+* AXED: Streams for reading and writing
 * DONE: Increment and decrement statements
 * Parallel assignment
 * DONE: Exceptions
