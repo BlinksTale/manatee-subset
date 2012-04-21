@@ -1,6 +1,7 @@
 package edu.lmu.cs.xlg.manatee.entities;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import edu.lmu.cs.xlg.util.Log;
 
@@ -24,10 +25,7 @@ public class ObjectType extends Type {
 
         @Override
         public void analyze(Log log, SymbolTable table, Subroutine owner, boolean inLoop) {
-            // Commented out code because these seem like they should exist here, but would not work
-            // due to needing Expressions rather than a String
-            //name.analyze(log, table, owner, inLoop);
-            //name.assertString("property", log);
+            // name should also be checked, but not sure how to do that or if necessary
             type.analyze(log, table, owner, inLoop);
         }
     }
@@ -51,4 +49,18 @@ public class ObjectType extends Type {
     public List<Property> getProperties() {
         return properties;
     }
+
+    @Override
+    public void analyze(Log log, SymbolTable table, Subroutine owner, boolean inLoop) {
+        // Check for duplicate properties, worked with the Tyler/Rich/Eric/Sam team on this
+        List<String> uniqueProperties = new ArrayList<String>();
+        for (Property p: properties) {
+            if (uniqueProperties.contains(p.name)) {
+                log.error("This property already exists in this ObjectType");
+            } else {
+                uniqueProperties.add(p.name);
+            }
+        }
+    }
+ 
 }
