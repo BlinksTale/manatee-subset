@@ -1,0 +1,12 @@
+--code directly from manatee notes
+
+to get the truth value prime of whole number n:
+    return no if n < 2
+    for each d in 3 to n - 1 by 2:
+        return no if n divides d
+    end
+    return yes
+end
+for each k in 1 to 100:
+    write k if prime(k)
+end

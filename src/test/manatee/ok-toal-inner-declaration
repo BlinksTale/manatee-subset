@@ -1,0 +1,7 @@
+--code directly from manatee notes
+
+my x is a number              -- ok, variable declaration
+loop:
+    my x is a number          -- ok, inside an inner statement sequence
+end
+

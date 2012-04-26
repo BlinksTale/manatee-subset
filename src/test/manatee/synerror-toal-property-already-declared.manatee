@@ -1,0 +1,7 @@
+--code directly from manatee notes
+
+my x is a number              -- ok, variable declaration
+for each x in [1, 10, 100]:   -- error, x already declared
+    write x
+end;
+

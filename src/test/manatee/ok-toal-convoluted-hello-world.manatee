@@ -1,0 +1,13 @@
+--code directly from manatee notes
+--NOTE: THIS CODE WAS COMMENTED OUT SINCE MODULES ARE NO LONGER SUPPORTED
+
+-- This is a pretty interesting Manatee program.
+-- It writes "hello, world" to standard output.
+-- It is more confusing than it needs to be.
+
+--use module Text
+my place is "world"
+--greet(place)
+--to greet string s:
+--    write uppercase("hello, " + s)
+--end

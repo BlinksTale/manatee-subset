@@ -1,0 +1,7 @@
+--code directly from manatee notes
+
+my x is a number              -- ok, variable declaration
+an x has:                     -- error, x already declared
+    a string name
+end
+

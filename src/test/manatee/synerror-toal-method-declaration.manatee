@@ -1,0 +1,7 @@
+--code directly from manatee notes
+
+my x is a number              -- ok, variable declaration
+to get number x of string y:  -- error, x already declared
+    do nothing
+end
+

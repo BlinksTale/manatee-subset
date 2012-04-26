@@ -232,10 +232,10 @@ public class ManateeToJavaScriptGenerator extends Generator {
             return "true";
 
         } else if (e instanceof CharacterLiteral) {
-            return "TODO_CHAR_LITERAL";
+            return e.getLexeme(); // Thanks to Dr. Toal's lecture
 
         } else if (e instanceof StringLiteral) {
-            return "TODO_STRING_LITERAL";
+            return e.getLexeme(); // Thanks to Dr. Toal's lecture
 
         } else if (e instanceof NumberLiteral) {
             return NumberLiteral.class.cast(e).getValue() + "";

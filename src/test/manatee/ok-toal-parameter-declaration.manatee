@@ -1,0 +1,8 @@
+--code directly from manatee notes
+
+my x is a number              -- ok, variable declaration
+to echo string x:             -- ok, parameter declaration (new scope)
+    write x
+    write x
+end;
+

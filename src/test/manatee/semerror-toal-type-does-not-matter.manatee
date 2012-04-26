@@ -1,0 +1,5 @@
+--code directly from manatee notes
+
+my x is a number              -- ok, variable declaration
+my x is a string              -- also error (type does NOT matter)
+
