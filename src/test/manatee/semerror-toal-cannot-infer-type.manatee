@@ -1,0 +1,3 @@
+--code directly from manatee notes
+
+my x is x                   -- error, cannot infer the type!

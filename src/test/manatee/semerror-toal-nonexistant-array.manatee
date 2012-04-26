@@ -1,0 +1,3 @@
+--code directly from manatee notes
+
+write x[4]                       -- fails with "nonexistent array"

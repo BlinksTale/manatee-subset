@@ -1,0 +1,5 @@
+--code directly from manatee notes
+
+my scores is [3, 6.2, 9]
+write scores[-3]                 -- fails with "out of bounds"
+

@@ -1,8 +1,6 @@
 --code directly from manatee notes
 
 my x is a number              -- ok, variable declaration
-to echo string x:             -- ok, parameter declaration (new scope)
-    write x
-    write x
+a y has:
+    a number x                -- ok, property declarations not considered
 end
-

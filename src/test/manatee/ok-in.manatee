@@ -1,0 +1,11 @@
+--check e1 in e2
+--from the notes:
+--Here e1 must have type character and e2 type string, or e2 must have type t list
+--and the type of e1 must be compatible with t. Returns whether or not e1 is a member of e2. 
+
+my x is 'x'
+my y is "xyz"
+
+if x in y:
+  do nothing
+end

@@ -1,8 +1,8 @@
 --code directly from manatee notes
 
 my x is a number              -- ok, variable declaration
-x = 2
-while true:
+set x to 2
+while x = 2:
     my x is "x"          -- ok, inside a different loop
 end
 

@@ -1,0 +1,5 @@
+--code directly from manatee notes
+
+for each i in 1 to 10:
+    increment i by 2        -- error (i is an iterator)
+end

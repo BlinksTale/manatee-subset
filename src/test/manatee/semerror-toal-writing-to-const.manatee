@@ -1,0 +1,6 @@
+--code directly from manatee notes
+
+my limit is always 1024     -- declares a read-only variable
+
+set limit to 2048           -- error (variable given fixed value in declaration)
+

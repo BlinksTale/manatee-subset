@@ -1,0 +1,15 @@
+--code directly from manatee notes
+
+if 7 divides 14:     -- yes
+  do nothing
+end
+if 7 divides 12:     -- no
+  do nothing
+end
+if 7 divides 3:      -- no
+  do nothing
+end
+if 7 divides 0:      -- yes
+  do nothing
+end
+

@@ -1,0 +1,4 @@
+--code directly from manatee notes
+
+my v is [3,1.0,8,2]         -- ok, v has type number list
+

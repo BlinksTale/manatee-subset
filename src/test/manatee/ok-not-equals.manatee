@@ -1,0 +1,5 @@
+--not equals
+
+if 1 ≠ 2:
+  do nothing
+end

@@ -1,0 +1,6 @@
+--code directly from manatee notes
+
+my scores is [3, 6.2, 9]
+write scores[0]                  -- prints 3
+write scores[1]                  -- prints 6.2
+write scores[2]                  -- prints 9

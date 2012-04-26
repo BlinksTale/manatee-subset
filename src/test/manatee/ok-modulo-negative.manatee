@@ -1,0 +1,5 @@
+--modulo tests
+
+my x is 5
+my y is -5
+set x to x modulo y

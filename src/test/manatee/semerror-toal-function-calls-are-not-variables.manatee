@@ -1,0 +1,4 @@
+--code directly from manatee notes
+
+my message is "howareyoutoday?"
+set slice(message,3,8) to 'x'        -- error: function calls are not variables

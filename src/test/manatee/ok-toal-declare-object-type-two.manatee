@@ -1,0 +1,8 @@
+--code directly from manatee notes
+
+a dress has:
+    a string brand
+    a whole number size
+    a string list colors
+    a truth value used
+end

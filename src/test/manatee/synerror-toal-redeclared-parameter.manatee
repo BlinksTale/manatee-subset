@@ -1,0 +1,6 @@
+--code directly from manatee notes
+
+to split number list x:
+    my z is a number   -- ok
+    my x is a string   -- error, x is already a parameter
+end

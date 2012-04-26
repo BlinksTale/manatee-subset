@@ -1,0 +1,8 @@
+--e1 >> e2
+--e1 right shifted e2
+--Each subexpression must have type whole number. Both expressions are evaluated, in any order.
+--Produces the value of e1 shifted right e2 positions.
+
+my x is 1
+my y is 2
+set x to x >> y

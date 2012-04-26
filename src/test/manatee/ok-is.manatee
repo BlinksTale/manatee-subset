@@ -1,0 +1,8 @@
+-- is equal to, reference the same
+
+my x is "string"
+my y is x
+
+if x is y:
+  do nothing
+end

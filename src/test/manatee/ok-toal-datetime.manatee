@@ -1,0 +1,12 @@
+--code directly from manatee notes
+
+a datetime has:
+    a whole number year
+    a whole number month
+    a whole number day
+    a whole number hour
+    a whole number minute
+    a whole number second
+    a whole number millisecond
+    a number time_zone_offset    -- in hours
+end

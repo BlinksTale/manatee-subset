@@ -1,0 +1,6 @@
+-- e1 bit or e2 
+
+my e1 is 0
+my e2 is 1
+
+my e3 is e1 bit or e2 

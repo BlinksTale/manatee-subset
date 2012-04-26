@@ -1,0 +1,3 @@
+-- interesting left shift
+my x is 1073741824
+set x to x << 1

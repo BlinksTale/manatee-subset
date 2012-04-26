@@ -1,0 +1,4 @@
+--code directly from manatee notes
+
+my pet is "dog"             -- declares a writable variable
+set pet to "cat"

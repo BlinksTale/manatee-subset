@@ -1,0 +1,7 @@
+--code directly from manatee notes
+
+my x is length of "dog"        -- x is now 3
+my primes is [2,3,5,7,11]
+set x to length of primes      -- x is now 5
+my s is ""
+set x to length of s           -- x is now 0
